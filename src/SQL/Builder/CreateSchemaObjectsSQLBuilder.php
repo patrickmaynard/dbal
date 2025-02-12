@@ -18,11 +18,11 @@ final class CreateSchemaObjectsSQLBuilder
     }
 
     /** @return list<string> */
-    public function buildSQL(Schema $schema): array
+    public function buildSQL(Schema $schema, bool $skipSequencesConditionally = false): array
     {
         return array_merge(
             $this->buildNamespaceStatements($schema->getNamespaces()),
-            $this->platform->supportsSequences() ? $this->buildSequenceStatements($schema->getSequences()) : [],
+            $this->platform->supportsSequences() && $skipSequencesConditionally ? $this->buildSequenceStatements($schema->getSequences()) : [],
             $this->buildTableStatements($schema->getTables()),
         );
     }
